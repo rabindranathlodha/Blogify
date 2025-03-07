@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include("./partials/head") %>
+  <title>Blog</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #ffecd2, #fcb69f);
+      font-family: 'Roboto', sans-serif;
+      color: #343a40;
+    }
+
+    .container {
+      margin-top: 3rem;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #2c3e50;
+    }
+
+    img {
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    pre {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      white-space: pre-wrap;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .profile-info img {
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+
+    .profile-info span {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .comments-section {
+      margin-top: 3rem;
+    }
+
+    .comment {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .comment img {
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+
+    .comment pre {
+      margin: 0;
+      background-color: #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      border-radius: 0.5rem;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .navbar {
+      background-color: #34495e;
+      padding: 1rem;
+    }
+
+    .navbar-brand {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: #ecf0f1;
+    }
+
+    .nav-link {
+      color: #ecf0f1;
+      margin-left: 1rem;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #f39c12;
+    }
+  </style>
+</head>
+<body>
+  <%- include("./partials/nav") %>
+
+  <div class="container mt-4">
+    <h1><%= blog.title %></h1>
+    <img src="<%= blog.coverImageURL %>" width="700px">
+    <pre><%= blog.body %></pre>
+  </div>
+  <div class="container profile-info">
+    <img src="<%= blog.createdBy.profileImageURL %>" width="50px"> <span><%= blog.createdBy.fullName %></span>
+  </div>
+
+  <div class="container comments-section">
+    <% if (locals.user) { %>
+    <h1>Comments (<%= comment.length %>)</h1>
+    <form action="/blog/comment/<%= blog._id %>" method="post">
+      <div class="form-group">
+        <label for="comment">Comment</label>
+        <textarea name="content" id="comment" class="form-control" rows="1" placeholder="Enter your comment"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <% } %>
+    <div class="mt-3">
+      <% comment.forEach(comment => { %>
+      <div class="comment">
+        <img src="<%= comment.createdBy.profileImageURL %>" width="50px">
+        <pre><%= comment.content %></pre>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+
+  <%- include("./partials/script") %>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
